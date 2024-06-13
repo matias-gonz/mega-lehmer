@@ -2,9 +2,22 @@ use std::ops::Add;
 
 const MODULUS: u64 = 17;
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Felt {
     pub value: u64,
 }
+
+impl Felt {
+    pub fn new(value: u64) -> Felt {
+        Felt {
+            value: value % MODULUS,
+        }
+    }
+
+    pub fn zero() -> Felt {
+        Felt::new(0)
+    }
+  }
 
 
 impl Add for Felt {
@@ -22,10 +35,20 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_new() {
+        let a = Felt::new(21);
+        let expected = Felt { value: 4 };
+
+        assert_eq!(a, expected);
+    }
+
+    #[test]
     fn test_add() {
-        let a = Felt { value: 5 };
-        let b = Felt { value: 12 };
+        let a = Felt::new(5);
+        let b = Felt::new(12);
         let c = a + b;
-        assert_eq!(c.value, 0);
+        let expected = Felt::zero();
+
+        assert_eq!(c, expected);
     }
 }
