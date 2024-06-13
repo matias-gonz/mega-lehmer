@@ -17,8 +17,7 @@ impl Felt {
     pub fn zero() -> Felt {
         Felt::new(0)
     }
-  }
-
+}
 
 impl Add for Felt {
     type Output = Felt;
@@ -44,11 +43,9 @@ impl Mul<Felt> for u64 {
     type Output = Felt;
 
     fn mul(self, other: Felt) -> Felt {
-       other * self
+        other * self
     }
-
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -88,7 +85,7 @@ mod tests {
         let b = 12;
         let c = b * a;
         let d = a * b;
-        
+
         assert_eq!(c, d);
     }
 }
