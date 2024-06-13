@@ -5,16 +5,6 @@ pub struct Felt<const MODULUS: u64> {
     pub value: u64,
 }
 
-impl<const MODULUS: u64> Felt<MODULUS> {
-    pub fn new(value: u64) -> Felt<MODULUS> {
-        Felt { value: value % 17 }
-    }
-
-    pub fn zero() -> Felt<MODULUS> {
-        Felt::new(0)
-    }
-}
-
 impl<const MODULUS: u64> Add for Felt<MODULUS> {
     type Output = Felt<MODULUS>;
 
@@ -50,6 +40,25 @@ impl<const MODULUS: u64> Mul for Felt<MODULUS> {
         Felt {
             value: (self.value * other.value) % MODULUS,
         }
+    }
+}
+
+pub trait FeltTrait:
+    Add<Output = Self> + Mul<Self, Output = Self> + Mul<u64, Output = Self> + Sized + Copy
+{
+    fn new(value: u64) -> Self;
+    fn zero() -> Self;
+}
+
+impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
+    fn new(value: u64) -> Self {
+        Felt {
+            value: value % MODULUS,
+        }
+    }
+
+    fn zero() -> Self {
+        Felt { value: 0 }
     }
 }
 
