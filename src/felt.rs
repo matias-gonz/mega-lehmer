@@ -1,56 +1,52 @@
 use std::ops::{Add, Mul};
 
-const MODULUS: u64 = 17;
-
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct Felt {
+pub struct Felt<const MODULUS: u64> {
     pub value: u64,
 }
 
-impl Felt {
-    pub fn new(value: u64) -> Felt {
-        Felt {
-            value: value % MODULUS,
-        }
+impl<const MODULUS: u64> Felt<MODULUS> {
+    pub fn new(value: u64) -> Felt<MODULUS> {
+        Felt { value: value % 17 }
     }
 
-    pub fn zero() -> Felt {
+    pub fn zero() -> Felt<MODULUS> {
         Felt::new(0)
     }
 }
 
-impl Add for Felt {
-    type Output = Felt;
+impl<const MODULUS: u64> Add for Felt<MODULUS> {
+    type Output = Felt<MODULUS>;
 
-    fn add(self, other: Felt) -> Felt {
+    fn add(self, other: Felt<MODULUS>) -> Felt<MODULUS> {
         Felt {
             value: (self.value + other.value) % MODULUS,
         }
     }
 }
 
-impl Mul<u64> for Felt {
-    type Output = Felt;
+impl<const MODULUS: u64> Mul<u64> for Felt<MODULUS> {
+    type Output = Felt<MODULUS>;
 
-    fn mul(self, other: u64) -> Felt {
+    fn mul(self, other: u64) -> Felt<MODULUS> {
         Felt {
             value: (self.value * other) % MODULUS,
         }
     }
 }
 
-impl Mul<Felt> for u64 {
-    type Output = Felt;
+impl<const MODULUS: u64> Mul<Felt<MODULUS>> for u64 {
+    type Output = Felt<MODULUS>;
 
-    fn mul(self, other: Felt) -> Felt {
+    fn mul(self, other: Felt<MODULUS>) -> Felt<MODULUS> {
         other * self
     }
 }
 
-impl Mul for Felt {
-    type Output = Felt;
+impl<const MODULUS: u64> Mul for Felt<MODULUS> {
+    type Output = Felt<MODULUS>;
 
-    fn mul(self, other: Felt) -> Felt {
+    fn mul(self, other: Felt<MODULUS>) -> Felt<MODULUS> {
         Felt {
             value: (self.value * other.value) % MODULUS,
         }
@@ -61,37 +57,39 @@ impl Mul for Felt {
 mod tests {
     use super::*;
 
+    type Felt17 = Felt<17>;
+
     #[test]
     fn test_new() {
-        let a = Felt::new(21);
-        let expected = Felt { value: 4 };
+        let a = Felt17::new(21);
+        let expected = Felt17 { value: 4 };
 
         assert_eq!(a, expected);
     }
 
     #[test]
     fn test_add() {
-        let a = Felt::new(5);
-        let b = Felt::new(12);
+        let a = Felt17::new(5);
+        let b = Felt17::new(12);
         let c = a + b;
-        let expected = Felt::zero();
+        let expected = Felt17::zero();
 
         assert_eq!(c, expected);
     }
 
     #[test]
     fn test_mul_scalar() {
-        let a = Felt::new(5);
+        let a = Felt17::new(5);
         let b = 12;
         let c = a * b;
-        let expected = Felt::new(9);
+        let expected = Felt17::new(9);
 
         assert_eq!(c, expected);
     }
 
     #[test]
     fn test_mul_scalar_commutative() {
-        let a = Felt::new(5);
+        let a = Felt17::new(5);
         let b = 12;
         let c = b * a;
         let d = a * b;
@@ -101,10 +99,10 @@ mod tests {
 
     #[test]
     fn test_mul() {
-        let a = Felt::new(2);
-        let b = Felt::new(12);
+        let a = Felt17::new(2);
+        let b = Felt17::new(12);
         let c = a * b;
-        let expected = Felt::new(7);
+        let expected = Felt17::new(7);
 
         assert_eq!(c, expected);
     }
