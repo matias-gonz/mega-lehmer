@@ -47,6 +47,16 @@ impl Mul<Felt> for u64 {
     }
 }
 
+impl Mul for Felt {
+    type Output = Felt;
+
+    fn mul(self, other: Felt) -> Felt {
+        Felt {
+            value: (self.value * other.value) % MODULUS,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -70,7 +80,7 @@ mod tests {
     }
 
     #[test]
-    fn test_mul() {
+    fn test_mul_scalar() {
         let a = Felt::new(5);
         let b = 12;
         let c = a * b;
@@ -80,12 +90,22 @@ mod tests {
     }
 
     #[test]
-    fn test_mul_commutative() {
+    fn test_mul_scalar_commutative() {
         let a = Felt::new(5);
         let b = 12;
         let c = b * a;
         let d = a * b;
 
         assert_eq!(c, d);
+    }
+
+    #[test]
+    fn test_mul() {
+        let a = Felt::new(2);
+        let b = Felt::new(12);
+        let c = a * b;
+        let expected = Felt::new(7);
+
+        assert_eq!(c, expected);
     }
 }
