@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{Add, Mul};
 
 const MODULUS: u64 = 17;
 
@@ -30,6 +30,26 @@ impl Add for Felt {
     }
 }
 
+impl Mul<u64> for Felt {
+    type Output = Felt;
+
+    fn mul(self, other: u64) -> Felt {
+        Felt {
+            value: (self.value * other) % MODULUS,
+        }
+    }
+}
+
+impl Mul<Felt> for u64 {
+    type Output = Felt;
+
+    fn mul(self, other: Felt) -> Felt {
+       other * self
+    }
+
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -50,5 +70,25 @@ mod tests {
         let expected = Felt::zero();
 
         assert_eq!(c, expected);
+    }
+
+    #[test]
+    fn test_mul() {
+        let a = Felt::new(5);
+        let b = 12;
+        let c = a * b;
+        let expected = Felt::new(9);
+
+        assert_eq!(c, expected);
+    }
+
+    #[test]
+    fn test_mul_commutative() {
+        let a = Felt::new(5);
+        let b = 12;
+        let c = b * a;
+        let d = a * b;
+        
+        assert_eq!(c, d);
     }
 }
