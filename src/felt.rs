@@ -69,61 +69,61 @@ impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
 mod tests {
     use super::*;
 
-    type Felt17 = Felt<17>;
+    type FeltX = Felt<17>;
 
     #[test]
     fn test_new() {
-        let a = Felt17::new(21);
-        let expected = Felt17 { value: 4 };
+        let a = FeltX::new(21);
+        let expected = FeltX { value: 4 };
 
         assert_eq!(a, expected);
     }
 
     #[test]
     fn test_add() {
-        let a = Felt17::new(5);
-        let b = Felt17::new(12);
+        let a = FeltX::new(5);
+        let b = FeltX::new(12);
         let c = a + b;
-        let expected = Felt17::zero();
+        let expected = FeltX::zero();
 
         assert_eq!(c, expected);
     }
 
     #[test]
     fn test_overflow_add() {
-        let a = Felt17::new(std::u64::MAX);
-        let b = Felt17::new(1);
+        let a = FeltX::new(std::u64::MAX);
+        let b = FeltX::new(1);
         let c = a + b;
         // https://www.wolframalpha.com/input?i=%2818446744073709551615+%2B+1%29+mod+17
-        let expected = Felt17::new(1);
+        let expected = FeltX::new(1);
 
         assert_eq!(c, expected);
     }
 
     #[test]
     fn test_mul_scalar() {
-        let a = Felt17::new(5);
+        let a = FeltX::new(5);
         let b = 12;
         let c = a * b;
-        let expected = Felt17::new(9);
+        let expected = FeltX::new(9);
 
         assert_eq!(c, expected);
     }
 
     #[test] //
     fn test_overflow_mul_scalar() {
-        let a = Felt17::new(18446744073709551614);
+        let a = FeltX::new(18446744073709551614);
         let b = 5;
         let c = a * b;
         // https://www.wolframalpha.com/input?i=%2818446744073709551614+*+5%29+mod+17
-        let expected = Felt17::new(12);
+        let expected = FeltX::new(12);
 
         assert_eq!(c, expected);
     }
 
     #[test]
     fn test_mul_scalar_commutative() {
-        let a = Felt17::new(5);
+        let a = FeltX::new(5);
         let b = 12;
         let c = b * a;
         let d = a * b;
@@ -133,7 +133,7 @@ mod tests {
 
     #[test] //
     fn test_overflow_mul_scalar_commutative() {
-        let a = Felt17::new(18446744073709551614);
+        let a = FeltX::new(18446744073709551614);
         let b = 5;
         let c = b * a;
         let d = a * b;
@@ -143,20 +143,20 @@ mod tests {
 
     #[test]
     fn test_mul() {
-        let a = Felt17::new(2);
-        let b = Felt17::new(12);
+        let a = FeltX::new(2);
+        let b = FeltX::new(12);
         let c = a * b;
-        let expected = Felt17::new(7);
+        let expected = FeltX::new(7);
 
         assert_eq!(c, expected);
     }
 
     #[test] //
     fn test_overflow_mul() {
-        let a = Felt17::new(18446744073709551614);
-        let b = Felt17::new(5);
+        let a = FeltX::new(18446744073709551614);
+        let b = FeltX::new(5);
         let c = a * b;
-        let expected = Felt17::new(12);
+        let expected = FeltX::new(12);
 
         assert_eq!(c, expected);
     }
