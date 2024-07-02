@@ -13,10 +13,15 @@ impl<F: FeltTrait> MegaLehmer<F> {
             Some(seed) => seed,
             None => time_seed(),
         };
-        let seed = match seed {
-            Some(seed) => seed,
+        let multiplier = match multiplier {
+            Some(multiplier) => multiplier,
             None => time_multiplier(),
         };
+
+        MegaLehmer {
+            multiplier: multiplier,
+            last_gen: seed,
+        }
     }
 
     pub fn gen(&mut self) -> F {
@@ -34,7 +39,7 @@ mod tests {
 
     #[test]
     fn test_gen() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Felt17::new(2));
+        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
         assert_eq!(lehmer.gen(), Felt17::new(2));
         assert_eq!(lehmer.gen(), Felt17::new(4));
         assert_eq!(lehmer.gen(), Felt17::new(8));
