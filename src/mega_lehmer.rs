@@ -51,7 +51,7 @@ mod tests {
 
     #[test]
     fn test_generate_seed_cannot_be_zero() {
-        let lehmer = MegaLehmer::new(None, Felt17::new(2));
+        let lehmer = MegaLehmer::new(None, Some(Felt17::new(2)));
         assert!(lehmer.last_gen != Felt17::zero());
     }
 }
