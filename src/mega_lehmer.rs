@@ -1,6 +1,6 @@
 use crate::felt::FeltTrait;
-use multiplier_generator::time_multiplier;
-use seed_generators::time_seed;
+// use seed_and_multiplier_generators::time_num_generator;
+use seed_and_multiplier_generators::crypto_num_generator;
 
 pub struct MegaLehmer<F: FeltTrait> {
     multiplier: F,
@@ -11,11 +11,11 @@ impl<F: FeltTrait> MegaLehmer<F> {
     pub fn new(seed: Option<F>, multiplier: Option<F>) -> MegaLehmer<F> {
         let seed = match seed {
             Some(seed) => seed,
-            None => time_seed(),
+            None => crypto_num_generator(),
         };
         let multiplier = match multiplier {
             Some(multiplier) => multiplier,
-            None => time_multiplier(),
+            None => crypto_num_generator(),
         };
 
         MegaLehmer {
