@@ -1,6 +1,6 @@
 use crate::felt::FeltTrait;
 // use seed_and_multiplier_generators::time_num_generator;
-use seed_and_multiplier_generators::crypto_num_generator;
+use generators::crypto_num_generator;
 
 pub struct MegaLehmer<F: FeltTrait> {
     multiplier: F,
@@ -28,6 +28,32 @@ impl<F: FeltTrait> MegaLehmer<F> {
         self.last_gen = self.last_gen * self.multiplier;
         self.last_gen
     }
+
+    pub fn period(&mut self) -> u64 {
+        let initial = self.last_gen;
+        let mut period = 1;
+        while self.gen() != initial {
+            period += 1;
+        }
+        period
+    }
+
+    pub fn is_full_period(&mut self) -> bool {
+        self.period() == F::modulus() - 1
+    }
+
+    pub fn period_is_at_least(&mut self, min_period: u64) -> bool {
+        let mut period = 1;
+        let initial = self.last_gen;
+        while period < min_period {
+            self.gen();
+            period += 1;
+            if self.last_gen == initial {
+                return false;
+            }
+        }
+        true
+    }
 }
 
 #[cfg(test)]
@@ -53,5 +79,35 @@ mod tests {
     fn test_generate_seed_cannot_be_zero() {
         let lehmer = MegaLehmer::new(None, Some(Felt17::new(2)));
         assert!(lehmer.last_gen != Felt17::zero());
+    }
+
+    #[test]
+    fn test_generate_multiplier_cannot_be_zero() {
+        let lehmer = MegaLehmer::new(Some(Felt17::new(1)), None);
+        assert!(lehmer.multiplier != Felt17::zero());
+    }
+
+    #[test]
+    fn test_period() {
+        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        assert_eq!(lehmer.period(), 8);
+    }
+
+    #[test]
+    fn test_is_full_period() {
+        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(3)));
+        assert!(lehmer.is_full_period());
+    }
+
+    #[test]
+    fn test_period_is_at_least() {
+        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        assert!(lehmer.period_is_at_least(8));
+    }
+
+    #[test]
+    fn test_period_is_not_at_least() {
+        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        assert!(!lehmer.period_is_at_least(9));
     }
 }
