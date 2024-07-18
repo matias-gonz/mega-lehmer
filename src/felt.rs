@@ -51,6 +51,7 @@ pub trait FeltTrait:
 {
     fn new(value: u64) -> Self;
     fn zero() -> Self;
+    fn modulus() -> u64;
 }
 
 impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
@@ -62,6 +63,10 @@ impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
 
     fn zero() -> Self {
         Felt { value: 0 }
+    }
+
+    fn modulus() -> u64 {
+        MODULUS
     }
 }
 
