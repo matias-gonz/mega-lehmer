@@ -10,7 +10,7 @@ pub fn time_num_generator<F: FeltTrait>() -> F {
     let time_since_midnight = now.time() - midnight;
     let mut felt = F::new(time_since_midnight.num_milliseconds() as u64);
 
-    while felt == F::zero() {
+    if felt == F::zero() {
         let now = chrono::Local::now();
         let time_since_midnight = now.time() - midnight;
         felt = F::new(time_since_midnight.num_milliseconds() as u64);
