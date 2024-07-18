@@ -60,6 +60,7 @@ pub trait FeltTrait:
     fn new(value: u64) -> Self;
     fn zero() -> Self;
     fn modulus() -> u64;
+    fn to_bytes(self) -> [u8; 8];
 }
 
 impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
@@ -75,6 +76,10 @@ impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
 
     fn modulus() -> u64 {
         MODULUS
+    }
+
+    fn to_bytes(self) -> [u8; 8] {
+        self.value.to_be_bytes()
     }
 }
 
