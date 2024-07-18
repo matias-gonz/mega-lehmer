@@ -5,23 +5,13 @@ pub struct Felt<const MODULUS: u64> {
     pub value: u64,
 }
 
-pub type Felt5 = Felt<31>;
-//pub type Felt5 = Felt<1_099_511_627_813>;     //40BIT_1
-//pub type Felt5 = Felt<1_099_511_627_839>;     //40BIT_2
-//pub type Felt5 = Felt<1_099_511_627_867>;     //40BIT_3
-
-//pub type Felt5 = Felt<281_474_976_710_597>;   //48BIT_1
-//pub type Felt5 = Felt<281_474_976_710_939>;   //48BIT_2
-//pub type Felt5 = Felt<281_474_976_711_127>;   //48BIT_3
-
-//pub type Felt5 = Felt<72_057_594_037_927_935>;    //56BIT_1
-//pub type Felt5 = Felt<72_057_594_037_929_071>;    //56BIT_2
-//pub type Felt5 = Felt<72_057_594_037_930_759>;    //56BIT_3
-
-//pub type Felt5 = Felt<2_305_843_009_213_693_951>;     //62BIT_1
-//pub type Felt5 = Felt<9_223_372_036_854_775_807>;     //63BIT_1
-//pub type Felt5 = Felt<18_446_744_073_709_551_557>;    //64BIT_1
-
+pub type Felt5 = Felt<17>;
+pub type Felt40 = Felt<1_099_511_627_813>; //40BIT
+pub type Felt48 = Felt<281_474_976_710_597>; //48BIT
+pub type Felt56 = Felt<72_057_594_037_927_935>; //56BIT
+pub type Felt62 = Felt<2_305_843_009_213_693_951>; //62BIT
+pub type Felt63 = Felt<9_223_372_036_854_775_807>; //63BIT
+pub type Felt64 = Felt<18_446_744_073_709_551_557>; //64BIT
 
 impl<const MODULUS: u64> Add for Felt<MODULUS> {
     type Output = Felt<MODULUS>;
@@ -86,8 +76,6 @@ impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    
 
     #[test]
     fn test_new() {
