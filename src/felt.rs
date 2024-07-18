@@ -55,10 +55,11 @@ impl<const MODULUS: u64> Mul for Felt<MODULUS> {
 }
 
 pub trait FeltTrait:
-    Add<Output = Self> + Mul<Self, Output = Self> + Mul<u64, Output = Self> + Sized + Copy
+    Add<Output = Self> + Mul<Self, Output = Self> + Mul<u64, Output = Self> + Sized + Copy + PartialEq
 {
     fn new(value: u64) -> Self;
     fn zero() -> Self;
+    fn modulus() -> u64;
 }
 
 impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
@@ -70,6 +71,10 @@ impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
 
     fn zero() -> Self {
         Felt { value: 0 }
+    }
+
+    fn modulus() -> u64 {
+        MODULUS
     }
 }
 
