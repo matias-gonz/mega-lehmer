@@ -1,5 +1,4 @@
 use crate::{errors::MinPercentageError, felt::FeltTrait};
-// use seed_and_multiplier_generators::time_num_generator;
 use generators::crypto_num_generator;
 
 pub struct MegaLehmer<F: FeltTrait> {
@@ -64,67 +63,65 @@ impl<F: FeltTrait> MegaLehmer<F> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::felt::Felt;
-
-    type Felt17 = Felt<17>;
+    use crate::felt::Felt5;
 
     #[test]
     fn test_gen() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
-        assert_eq!(lehmer.gen(), Felt17::new(2));
-        assert_eq!(lehmer.gen(), Felt17::new(4));
-        assert_eq!(lehmer.gen(), Felt17::new(8));
-        assert_eq!(lehmer.gen(), Felt17::new(16));
-        assert_eq!(lehmer.gen(), Felt17::new(15));
-        assert_eq!(lehmer.gen(), Felt17::new(13));
-        assert_eq!(lehmer.gen(), Felt17::new(9));
+        let mut lehmer = MegaLehmer::new(Some(Felt5::new(1)), Some(Felt5::new(2)));
+        assert_eq!(lehmer.gen(), Felt5::new(2));
+        assert_eq!(lehmer.gen(), Felt5::new(4));
+        assert_eq!(lehmer.gen(), Felt5::new(8));
+        assert_eq!(lehmer.gen(), Felt5::new(16));
+        assert_eq!(lehmer.gen(), Felt5::new(15));
+        assert_eq!(lehmer.gen(), Felt5::new(13));
+        assert_eq!(lehmer.gen(), Felt5::new(9));
     }
 
     #[test]
     fn test_generate_seed_cannot_be_zero() {
-        let lehmer = MegaLehmer::new(None, Some(Felt17::new(2)));
-        assert!(lehmer.last_gen != Felt17::zero());
+        let lehmer = MegaLehmer::new(None, Some(Felt5::new(2)));
+        assert!(lehmer.last_gen != Felt5::zero());
     }
 
     #[test]
     fn test_generate_multiplier_cannot_be_zero() {
-        let lehmer = MegaLehmer::new(Some(Felt17::new(1)), None);
-        assert!(lehmer.multiplier != Felt17::zero());
+        let lehmer = MegaLehmer::new(Some(Felt5::new(1)), None);
+        assert!(lehmer.multiplier != Felt5::zero());
     }
 
     #[test]
     fn test_period() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        let mut lehmer = MegaLehmer::new(Some(Felt5::new(1)), Some(Felt5::new(2)));
         assert_eq!(lehmer.period(), 8);
     }
 
     #[test]
     fn test_is_full_period() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(3)));
+        let mut lehmer = MegaLehmer::new(Some(Felt5::new(1)), Some(Felt5::new(3)));
         assert!(lehmer.is_full_period());
     }
 
     #[test]
     fn test_period_is_at_least() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        let mut lehmer = MegaLehmer::new(Some(Felt5::new(1)), Some(Felt5::new(2)));
         assert!(lehmer.period_is_at_least(0.5).unwrap());
     }
 
     #[test]
     fn test_period_is_not_at_least() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        let mut lehmer = MegaLehmer::new(Some(Felt5::new(1)), Some(Felt5::new(2)));
         assert!(!lehmer.period_is_at_least(0.6).unwrap());
     }
 
     #[test]
     fn test_period_is_not_at_least_with_min_percentage_error() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        let mut lehmer = MegaLehmer::new(Some(Felt5::new(1)), Some(Felt5::new(2)));
         assert!(lehmer.period_is_at_least(1.1).is_err());
     }
 
     #[test]
     fn test_period_is_at_least_with_min_percentage_error() {
-        let mut lehmer = MegaLehmer::new(Some(Felt17::new(1)), Some(Felt17::new(2)));
+        let mut lehmer = MegaLehmer::new(Some(Felt5::new(1)), Some(Felt5::new(2)));
         assert!(lehmer.period_is_at_least(-0.1).is_err());
     }
 }
