@@ -5,7 +5,8 @@ pub struct Felt<const MODULUS: u64> {
     pub value: u64,
 }
 
-pub type Felt5 = Felt<17>;
+pub type Felt5 = Felt<17>; //5BIT
+pub type Felt32 = Felt<2_147_483_647>; //32BIT
 pub type Felt40 = Felt<1_099_511_627_813>; //40BIT
 pub type Felt48 = Felt<281_474_976_710_597>; //48BIT
 pub type Felt56 = Felt<72_057_594_037_927_935>; //56BIT
@@ -60,6 +61,7 @@ pub trait FeltTrait:
     fn new(value: u64) -> Self;
     fn zero() -> Self;
     fn modulus() -> u64;
+    fn to_bytes(self) -> [u8; 8];
 }
 
 impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
@@ -75,6 +77,10 @@ impl<const MODULUS: u64> FeltTrait for Felt<MODULUS> {
 
     fn modulus() -> u64 {
         MODULUS
+    }
+
+    fn to_bytes(self) -> [u8; 8] {
+        self.value.to_be_bytes()
     }
 }
 
