@@ -65,7 +65,7 @@ let b = mega_lehmer.gen();
 
 **PractRand:**
 
-To run the `PractRand` test, generate Numbers with the test in "testgens.rs" file then move into the "generated_numbers" folder. Run the following commands in the generated_numbers folder:
+To run the `PractRand` test, generate Numbers with the test in "testgens.rs" file then move into the "generated_numbers" folder. Run the following commands:
 
 Windows: 
 ```bash
