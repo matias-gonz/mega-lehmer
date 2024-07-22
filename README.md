@@ -5,7 +5,7 @@ Lehmer random number generator 64 Bits and random seed / multiplier generation
 
 ## Quickstart
 
-Choose a fiels size, create a `MegaLehmer` and use `gen` to generate numbers:
+Choose a field size, create a `MegaLehmer` and use `gen` to generate numbers:
 
 ```rust
 let mut mega_lehmer = MegaLehmer::<Felt64>::new(None, None);
